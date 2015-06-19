@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="myDiv"></div>
+	<script>
+var div = document.getElementById("myDiv");
+		div.innerHTML = "_<script defer>alert('hi');<\/script>";
+	</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>eval的劫持</title>
+</head>
+<body>
+	<script>
+	//这里的匿名函数加了一个括号 其实最外面那个括号加不加都一样
+		var a =(function(arg){	//a() --> 执行了函数本身,于是console.log;
+			var a1 = 1;
+			console.log("a外层函数执行");
+			return function(){	//a()() --> 执行 <到> 内部的匿名函数 返回了a1
+				return a1;
+			}
+		})
+
+	//这里的匿名函数加了一个括号
+		var b =(function(arg){
+			var a2 = 2;
+			console.log("b外层函数执行");
+			return function(){							//注意: 如果再在浏览器输入b(),是不会出现 "b外层函数执行" ,因为函数本身就立即运行一遍就销毁了.
+				return a2;
+			}
+		})()
+		//这里在尾部加了一个小括号,但是不传参, 然后就立即执行了这个函数，然后就销毁了这个变量b,但是b内部保留着一个闭包,所以在浏览器输入b,还会出现被引用的匿名函数
+
+	//我们给小括号加参数
+		var c = (function(arg){
+			console.log("c外层函数执行");
+			console.log(arg);
+			return function(d){
+				return d;
+			}
+		})(333)
+		//这里我们给小括号添加了一个参数,然后立马就传递进这个参数 之后也立即销毁
+
+	//实战分析, 改写了eval()的直接调用和间接调用
+		var eval=(function(e){					//这一刻, eval函数被重写
+				console.log('e的值是:'+e);	//e的值是:function eval() { [native code] }
+		    return function(data){
+			    console.log(data);
+			    e(data);
+		    }
+		})(eval);		//并非把自己传递进去, 而是传进去原生的eval函数, 用window.eval可代替
+		// var temp = eval;
+		// console.log("eval的值:"+eval);		//function (data){console.log(data);e(data);}
+		// eval("alert(1)");  //直接进入这个闭包,然后解析"alert(1)";
+
+		//实例验证
+		var a="global";
+		function test(){
+		  var a="local";
+		  eval("alert(a)");
+		}
+		test();					// global
+	</script>
+</body>
+</html>

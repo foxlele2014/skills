@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>background-size特性</title>
+	<style>
+		*{margin:0;padding:0;}
+		.test{
+			background:url(http://www.w3school.com.cn/i/eg_smile.gif) no-repeat;
+			width: 400px;
+			height: 200px;
+			border:1px solid;
+			/* 数值: 按照数值来放大或者缩小 百分号的话就是以边框的大小来为基准, px的话就是实际的宽高 (如果只有一个值, 那么将按照宽来做基准)*/
+			background-size:100%;
+			/* cover: 按照图本身的比例来放大到边框的最大边 超出部分会被裁掉*/
+			/*background-size:cover;	*/
+			/* contain: 按照图本身的比例来放大,且以最小的边框为准*/
+			/*background-size:contain;*/
+		}
+	</style>
+</head>
+<body>
+	<div class="test"></div>
+	<script>
+	// http://www.w3school.com.cn/tiy/c.asp?f=css_background-size 参考网址
+	</script>
+</body>
+</html>

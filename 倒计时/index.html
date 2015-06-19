@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="gb2312" />
+<title>倒计时</title>
+<meta name="keywords" content="关键字,关键字,关键字" />
+<meta name="description" content="描述。……" />
+<meta name="Author" content="YangMing_gz ">
+<link href="http://js.3conline.com/pconline/common/css/zt_base.1.0.css" rel="stylesheet" type="text/css">
+<link href="images/style.css" rel="stylesheet" type="text/css">
+
+<!--[if IE 6]><script>document.execCommand("BackgroundImageCache", false, true)</script><![endif]-->
+</head>
+<body>
+<div class="time" id="countTest"></div>
+
+<script type="text/javascript">
+var cTime;
+function callTime(data){
+	cTime=data.ts;
+}
+</script>
+<script src="http://magicube.pconline.com.cn/intf/dbTimes.jsp?jsoncallback=callTime"></script>
+
+<script type="text/javascript" src="countdown.min.js"></script>
+<script>
+countdown({
+  id: 'countTest',
+  date: new Date('2015/10/11 11:11:11').getTime(),//结束时间
+  leadingZero: true,
+  useServerTime: true,
+  sTime: cTime,//服务器时间
+  showDate:true,
+  htmlTemplate: '<span>剩余</span><i>%{d}</i><em>天</em><i>%{h}</i><em>时</em><i class="minute">%{m}</i><em>分</em><i class="second">%{s}</i><em>秒</em>',
+  onComplete:function(){
+		alert('倒计时完成啦');
+  }
+});
+</script>
+
+</body>
+</html>

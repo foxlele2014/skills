@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+	// [].constructor.constructor("alert('hi')")();
+	// console.log([].constructor);	//显然数组对象的构造函数是Array();
+	// console.log([].constructor.constructor);	//显然Array()构造函数是Function();
+	// var temp = [].constructor.constructor('alert(123)');	//这里直接给匿名函数传参
+	// temp();			//执行
+	// toString.constructor("alert('321')")()	//同理, 函数实例的指向Function()
+	
+
+
+	// 数组
+	var a;
+	a in ['a','b','c']	//false, 尽管数组里面有 a 这个属性, 但是检查的确实数组本身的[特性], 比如 'length','constructor'之类的属性
+	var arr = ['one','two','three','four'];
+	arr.five = '5';		//这里是按照 键值 的方式给数组自身添加属性
+	arr.six = '6';		//这里是按照 键值 的方式给数组自身添加属性
+
+	// arr.push('test');	//给数组内部添加元素
+	4 in arr;//false 原来的素组不存在第5个元素
+	0 in arr;//true 存在第1个元素
+
+	'one' in arr; //false
+	'five' in arr;//true, 通过 键值 添加进去的属性
+	'length' in arr;//true 这个是数组本身的特性
+
+	//对象
+	var obj = {"a":1,"b":2,"c":3}
+	'a' in obj ; //true	,键值属性
+	'constructor' in obj; //true	自身的特性(属性) 其实也是键值属性
+
+	//好咯, 有趣的东西来了
+	// (alert(123))in(alert(321));	//经检测所有浏览器通杀....这就意味着浏览器会先解析(执行)完两边的alert，然后再抛出错误。这个特性可以让我们干点坏事。。。嘘！
+	// "".constructor.constructor('alert(123)')();
+	</script>
+</body>
+</html>

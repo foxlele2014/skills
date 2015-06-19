@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>单线程问题</title>
+</head>
+<body>
+	<script>
+	var t = true;
+	setTimeout(function(){ t = false; }, 1000);
+	while(t){
+		alert(123);
+	 }
+	alert('end');
+	</script>
+</body>
+</html>

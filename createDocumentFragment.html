@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id="btnTest">aaa</button>
+	<script>
+	 
+	// (function() {
+	// 	var a = b = 5;
+	// })();
+	// console.log(b);
+	// console.log(a);
+
+document.getElementById("btnTest").onclick = function(){
+     alert(this);	//DOM
+     sayHi();			//object Window
+     sayHi2(this)	//DOM
+  }
+  	function sayHi(){
+			alert(this);
+	}
+		function sayHi2(context){
+			alert(context);
+	}
+var list = document.getElementById("mylist"),
+		fragment = docuemnt.createDocumentFragment(),
+		item,
+		i;
+	for(i=0;i<10;i++){
+			item =document.createElement("li");
+			fragment.appendChild(item);
+			item.appendChild(document.creatTextNode("Item:"+i));
+			list.appendChild(fragment);
+	}var list = document.getElementById("mylist"),
+		fragment = docuemnt.createDocumentFragment(),
+		item,
+		i;
+	for(i=0;i<10;i++){
+			item =document.createElement("li");
+			fragment.appendChild(item);
+			item.appendChild(document.creatTextNode("Item:"+i));
+			list.appendChild(fragment);
+	}
+	</script>
+</body>
+</html>

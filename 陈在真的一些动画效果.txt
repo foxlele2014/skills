@@ -1,0 +1,8 @@
+http://sunnyzhen.github.io/demo/recruit/index.html
+http://sunnyzhen.github.io/css3/hollywood_skin/hollywood_skin.html
+http://sunnyzhen.github.io/css3/animation_principles/demo.html
+http://webrebuild.org/2014/ppt/webrebuild_ppt_02.pdf
+http://blog.sina.com.cn/u/1960234717
+这些都是它做的，纯CSS3实现的动画
+页面上能动的，都是CSS3动画
+还有他总结出来的动画14原则

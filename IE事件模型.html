@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id="btn">btn</button>
+	<script>
+	var btn = document.getElementById('btn');
+	btn.attachEvent("onclick",function(){
+		alert(111);
+	});
+	btn.attachEvent("onclick",function(){
+		alert(111);
+	});
+
+	btn.detachEvent("onclick",function(){
+		alert(111);
+	});
+	btn.detachEvent("onclick",function(){
+		alert(111);
+	});
+	</script>
+</body>
+</html>

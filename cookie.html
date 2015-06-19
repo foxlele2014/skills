@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <title>cookie</title>
+</head>
+<body>
+     <p>http cookie</p>
+     <div id="box" style="behavior:url(#default#userData)"></div>
+     <script>
+     /*
+          其他存储方式:(DOM存储)
+          IE 提供了持久化用户数据: userData; 单条最高128k;每个域名下最多1M; 除非清楚,否则一直存在
+          window.onload=function(){     //只对IE 678有效
+          var box = document.getElementById('box');
+          // box.setAttribute('name','k');     //设置键值对;
+          // box.save('user');                                   //上面的键值对保存成这个名字(项);
+          // box.expires=setCookieDate(7);     //调用了下面声明的函数.不设expires就是永久.
+          box.load('user');
+          alert(box.getAttribute('name'));
+     }
+     */
+
+     // 高级存储方式(Web存储): sessionStorage和globalStorage(已废弃,被HTML5的localStorage代替)     
+     //IE8以上才能使用,这两个对象都是永久保存的,保存在缓存里,只有手工删除或者清理浏览器才能清除干净. 容量IE FF 5M; chrome 2.5M
+
+     // sessionStorage.setItem('name','sessionStorage');          //设置键值对;
+     // sessionStorage.removeItem('name');                                             //删除
+     // sessionStorage.bbb='kkk';
+     // alert(sessionStorage.bbb)                                                                      //这样也是可以设置的. 用removeItem(bbb)删除
+     // alert(sessionStorage.getItem('name'));                                   //浏览器关闭的时候清除;可以手动删除,也可以removeItem()删除
+
+     // localStorage的方法和sessionStorage的使用方法是一致的.
+
+     /*------------------------------------------------------------------------------------------------------------------------*/
+
+     // 知识点1: 生产和获取
+     /*
+     //形式:
+     document.cookie = 'key=val;[expires(中止)=失效时间;path=路径访问;domain=域名;secure]' //中括号内可选
+     path: 设置只可以这个路径访问;
+     domain: 只能是这个域名访问;
+     secure: 只能通过https协议来访问, 虽然已经生成cookie.
+
+
+     document.cookie = 'name=k';
+     alert( document.cookie);          //chrome不支持显示, FF IE正常, 注意编码问题
+    
+     //删除方法1:
+     var date = new Date();
+     date.setDate((date.getDate()+7));     //getDate()获取日期;
+     document.cookie ='key=val;expires=date';     //设置销毁日期
+     //当过了这个时间点,就会删除cookie(非真正删除), 删除cookie的方法就直接将销毁时间定在昨天.
+
+     //删除方法2:
+     document.cookie ='key=val;expires=new Date(0)';     //0就是1970年头1秒
+     */
+
+     //编码以兼容
+     // document.cookie = 'name=' + encodeURIComponent('陈新垲');     //编码
+     //注释掉这一行, 也是可以读出来的, 为保障安全,就得考虑 失效时间(通常是会话结束,即关闭浏览器的时候), 每个浏览器的过期时间不一样.
+     // alert(decodeURIComponent(document.cookie));     //解码
+     //注意: 不向磁盘写入cookir, 还是可以获取cookie的.(因为已经被写进磁盘了)
+
+    
+     /*------------------------------------------------------------------------------------------------------------------------*/
+
+     //知识点2: 封装获取单个键值的函数
+     /*
+          document.cookie='user = k';
+          document.cookie='age = 22';
+          document.cookie='job = fe';
+          alert(document.cookie);     //全部都显示出来. 我们希望通过传递
+     */
+
+     //设置cookie
+     function setCookie(name, value, expires , path ,domain ,secure){
+          var cookieName = encodeURIComponent(name)+'='+encodeURIComponent(value);
+          //expires是一个对象
+          if(expires instanceof Date){
+               cookieName+=';expires='+expires;     //这个expires就是setCookieDate(day);
+          }
+          if(path){
+               cookieName+=';path='+path;    
+          }
+          if(domain){
+               cookieName+=';domain='+domain;    
+          }
+          if(secure){
+               cookieName+=';secure'     ;
+          }
+          document.cookie= cookieName;
+     }
+    
+     //设置过期时间 (天) , 这个函数单独列出来是因为有点复杂
+     function setCookieDate(day){
+          var date= null;
+          if(typeof day =='number' && day>0){     //等于0就过期了
+               date = new Date();
+               date.setDate(date.getDate()+day);
+          }else{
+               throw new Error('时间设置有错,必须是数字并且大于0');
+          };
+          // return date;
+          return date.toGMTString();          //得到的是字符串
+     };
+
+     //获取cookie
+     function getCookie(name){
+          // return document.cookie;          //这样会输出所有已存在的cookie, 我们的想法是传递对应的参数获取对应的cookie值
+          var cookieName = encodeURIComponent(name)+'=';
+          var cookieStart = document.cookie.indexOf(cookieName);
+          var cookieValue = null;
+          if (cookieStart>-1) {
+               var cookieEnd = document.cookie.indexOf(';',cookieStart);     //用分号来获取键值对的结束位置.
+               if (cookieEnd==-1) {                                             //-1是表示最后那个键值对是没有分号,因此获取到它并且加上cookieStart来当做cookie的长度.
+                    cookieEnd = document.cookie.length;
+               };
+               // cookieValue = document.cookie.substring(cookieStart+cookieName.length , cookieEnd );     //substring(agr1, arg2)分隔字符串 ,这段还没有解码
+               cookieValue = decodeURIComponent(document.cookie.substring(cookieStart+cookieName.length , cookieEnd ));    
+          };
+          return cookieValue;
+     }
+     // alert(getCookie('job'));    
+     // setCookie('user','k',setCookieDate(7));
+     // setCookie('job','fe',setCookieDate(7));
+
+     /*------------------------------------------------------------------------------------------------------------------------*/
+     /*
+          cookie的缺点:
+          (1)容量小, 大概4KB. 在单个域名下最多生成20条cookie(IE6); 6以后IE和FF的50条; chrome没做限制.
+          为了兼容, 只能按照20条的标准来实现. 超过了就会自动清理, FF会随机清除cookie
+          (2)账号密码不适合存储在cookie
+    
+     */
+
+    
+     </script>
+</body>
+</html>
